@@ -1,16 +1,50 @@
 <script setup lang="ts">
-import { VideoPlay } from '@element-plus/icons-vue'
-import icon from '@/components/icons/icon.png'
 import { ref } from 'vue'
-import testHead from '@/assets/headImage.jpg'
+import {useRouter} from 'vue-router'
+import { VideoPlay } from '@element-plus/icons-vue'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 import TopMenuBar from '@/components/TopMenuBar.vue'
+import icon from '@/components/icons/icon.png'
+import type { Video } from '@/config/Video'
+
+import testHead from '@/assets/headImage.jpg'
+
+const router = useRouter();
+const userStore = useUserStore();
+const {isLogin,headImage,userName} = storeToRefs(userStore);
+
+//测试数据
+userStore.headImage = testHead;
+userStore.userName = "用户2";
+
+// const isLogin = userStore.isLogin;
+// const headImg = userStore.headImage;
+// const userName = userStore.userName;
+const video = <Video>{
+    vid:"v2",
+    cover: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+    subTitle: "子标题",
+    time: "22:22:22",
+    title: "标题",
+    vipOnly: false
+}
 
 //默认激活标签
-const activeIndex = ref<string>("1");
+const activeIndex = ref<string>();
 const topMenuBarClick = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
 }
-const headImg = testHead;
+const loginClick = () => {
+    userStore.isLogin = true;
+}
+const logoutClick = () => {
+    userStore.isLogin = false;
+}
+const videoClickHandler = (video: Video) => {
+    console.log(video.title);
+    router.push("/player/"+video.vid);
+}
 
 </script>
 
@@ -18,8 +52,8 @@ const headImg = testHead;
     <el-container>
         <el-header>
             <!-- 导航栏 -->
-            <TopMenuBar :activeIndex="activeIndex" :webSiteIcon="icon" :headImg="headImg"
-                @topMenuBarClick="topMenuBarClick"></TopMenuBar>
+            <TopMenuBar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"
+                :user-name="userName" @topMenuBarClick="topMenuBarClick" @login-click="loginClick" @logout-click="logoutClick"></TopMenuBar>
 
         </el-header>
         <el-main>
@@ -27,12 +61,15 @@ const headImg = testHead;
                 <p>分栏1</p>
                 <el-divider />
                 <el-row>
-                    <el-col v-for="(video, index) in 10" :key="video" :span="4" :offset="index % 5 != 0 ? 1 : 0">
-                        <el-skeleton style="width: 240px" :loading="false" animated>
+                    <el-col v-for="(videoI, index) in 10" :key="index" :span="4" :offset="index % 5 != 0 ? 1 : 0">
+                        <el-skeleton :loading="false" animated>
                             <template #template>
-                                <el-skeleton-item variant="image" style="width: 240px; height: 240px" />
-                                <div style="padding: 14px">
-                                    <el-skeleton-item variant="h3" style="width: 50%" />
+                                <div class="cover">
+                                    <el-skeleton-item variant="image" class="image" />
+                                    <el-skeleton-item variant="text" class="time"></el-skeleton-item>
+                                </div>
+                                <div class="discibe">
+                                    <el-skeleton-item variant="text" style="width: 50%" />
                                     <div style="
                                         display: flex;
                                         align-items: center;
@@ -46,21 +83,19 @@ const headImg = testHead;
                                 </div>
                             </template>
                             <template #default>
-                                <el-card :body-style="{ padding: '0px', marginBottom: '1px' }">
+                                <el-card :body-style="{ padding: '0px' }">
                                     <div class="cover">
-                                        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                                            class="image" />
-                                        <span class="time">11:11:11</span>
+                                        <img :src="video.cover" class="image" @click="videoClickHandler(video)" />
+                                        <span class="time">{{ video.time }}</span>
                                         <div class="covermask">
-                                            <VideoPlay class="playIcon"/>
+                                            <VideoPlay class="playIcon" />
                                         </div>
                                     </div>
 
                                     <div class="discribe">
-                                        <span>Delicious hamburger</span>
-                                        <div class="bottom card-header">
-                                            <el-button text class="button">Operation button</el-button>
-                                        </div>
+                                        <span class="title" @click="videoClickHandler(video)">{{ video.title }}</span>
+                                        <br>
+                                        <span class="subTitle" @click="videoClickHandler(video)">{{ video.subTitle }}</span>
                                     </div>
                                 </el-card>
                             </template>
@@ -81,12 +116,12 @@ const headImg = testHead;
     margin-bottom: 20px;
 }
 
-.videoColumns .el-card .cover {
+.videoColumns .cover {
     height: 150px;
     position: relative;
 }
 
-.videoColumns .el-card .covermask {
+.videoColumns .cover .covermask {
     position: absolute;
     opacity: 0;
     pointer-events: none;
@@ -96,36 +131,56 @@ const headImg = testHead;
     right: 0;
     width: 100%;
     height: 100%;
-    pointer-events:none;
+    pointer-events: none;
 }
 
-.videoColumns .el-card:hover .covermask{
+.videoColumns .cover:hover .covermask {
     opacity: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.videoColumns .el-card .cover .image {
+.videoColumns .cover .image {
     width: 100%;
     height: 150px;
 }
 
-.videoColumns .el-card .cover .time {
+.videoColumns .cover .time {
     position: absolute;
     left: 0;
     bottom: 0;
     color: white;
     background-color: rgba(0, 0, 0, 0.2);
 }
-.videoColumns .el-card .covermask .playIcon{
+
+.videoColumns .covermask .playIcon {
     width: 50px;
     height: 50px;
-    
+
 }
 
-.videoColumns .el-card .discribe {
-    padding: 14px
+.videoColumns .discribe {
+    padding: 14px 14px 14px 24px
+}
+
+.videoColumns .discribe .title {
+    font-size: medium;
+    font-weight: bold;
+}
+
+.videoColumns .discribe .title:hover {
+    color: dodgerblue;
+}
+
+.videoColumns .discribe .subTitle {
+    line-height: 30px;
+    padding-left: 20px;
+    color: gray;
+}
+
+.videoColumns .discribe .subTitle:hover {
+    color: dodgerblue;
 }
 </style>
 
