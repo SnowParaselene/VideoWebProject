@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import icon from '@/components/icons/icon.png'
 import type { Video } from '@/config/Video';
+import LoginAndRegisterDialog from '@/components/LoginAndRegisterDialog.vue';
 
 const userStore = useUserStore();
 const { isLogin, headImage, userName } = storeToRefs(userStore);
@@ -27,6 +28,8 @@ const video = <Video>{
 }
 
 const describeTextArea = ref<HTMLTextAreaElement>();
+//对话框是否可见
+const dialogVisible = ref<boolean>(false);
 
 onMounted(() => {
     //创建大小变化的监视器
@@ -59,13 +62,20 @@ const adjustDescribeAreaHeight = () => {
 const topMenuBarClick = (key: String, keyPath: String[]) => {
     console.log(key, keyPath);
 }
-//点击登录按钮
+//顶部导航栏点击登录按钮
 const loginClick = () => {
-    isLogin.value = true;
+    // userStore.isLogin = true;
+    if(!userStore.isLogin){
+        dialogVisible.value=true;
+    }
 }
-//点击退出按钮
+//顶部导航栏菜单项登出被点击
 const logoutClick = () => {
-    isLogin.value = false;
+    userStore.isLogin = false;
+}
+//登录对话框关闭
+const dialogClose = ()=>{
+    dialogVisible.value=false;
 }
 
 
@@ -73,6 +83,7 @@ const logoutClick = () => {
 
 <template>
     <el-container>
+        <login-and-register-dialog v-model:visible="dialogVisible" @dialogClose="dialogClose"></login-and-register-dialog>
         <el-header>
             <!-- 导航栏 -->
             <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"

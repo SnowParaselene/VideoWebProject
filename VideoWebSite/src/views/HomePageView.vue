@@ -5,10 +5,12 @@ import { VideoPlay } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import TopMenuBar from '@/components/TopMenuBar.vue'
+import LoginAndRegisterDialog from '@/components/LoginAndRegisterDialog.vue'
 import icon from '@/components/icons/icon.png'
 import type { Video } from '@/config/Video'
 
 import testHead from '@/assets/headImage.jpg'
+import { fa } from 'element-plus/lib/locale/index.js'
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -30,12 +32,16 @@ const video = <Video>{
     vipOnly: true
 }
 
+//子组件参数
 //是否加载中
 const loading = ref<boolean>(false);
-
+//对话框是否可见
+const dialogVisible = ref<boolean>(false);
 //默认激活标签
 const activeIndex = ref<string>();
 
+//子组件事件回调函数
+//顶部导航栏菜单项被点击
 const topMenuBarClick = (key: string, keyPath: string[]) => {
     console.log(key, keyPath);
     if (key=="player") {
@@ -43,26 +49,37 @@ const topMenuBarClick = (key: string, keyPath: string[]) => {
     }
     // router.push("/"+key);
 }
+//顶部导航栏点击登录按钮
 const loginClick = () => {
-    userStore.isLogin = true;
+    // userStore.isLogin = true;
+    if(!userStore.isLogin){
+        dialogVisible.value=true;
+    }
 }
+//顶部导航栏菜单项登出被点击
 const logoutClick = () => {
     userStore.isLogin = false;
 }
+//点击进入视频
 const videoClickHandler = (video: Video) => {
     console.log(video.title);
     router.push("/player/" + video.vid);
+}
+//登录对话框关闭
+const dialogClose = ()=>{
+    dialogVisible.value=false;
 }
 
 </script>
 
 <template>
     <el-container>
+        <login-and-register-dialog v-model:visible="dialogVisible" @dialogClose="dialogClose"></login-and-register-dialog>
         <el-header>
             <!-- 导航栏 -->
-            <TopMenuBar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"
+            <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"
                 :user-name="userName" @topMenuBarClick="topMenuBarClick" @login-click="loginClick"
-                @logout-click="logoutClick"></TopMenuBar>
+                @logout-click="logoutClick"></top-menu-bar>
 
         </el-header>
         <el-main>
