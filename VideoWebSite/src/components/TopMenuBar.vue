@@ -10,7 +10,7 @@ const props = defineProps({
 const emit = defineEmits(["topMenuBarClick","loginClick","logoutClick"]);
 
 const handleSelect = (key: string, keyPath: string[]) => {
-    emit('topMenuBarClick');
+    emit('topMenuBarClick',key,keyPath);
 }
 
 const handlerLogin = ()=>{

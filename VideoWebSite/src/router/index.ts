@@ -17,7 +17,7 @@ const router = createRouter({
       path: '/player/:vid',
       name: 'player',
       component: VideoPlayPageViewVue,
-      props: { vid: String },
+      props: true,
       meta: {
         title: '视频播放页'
       }

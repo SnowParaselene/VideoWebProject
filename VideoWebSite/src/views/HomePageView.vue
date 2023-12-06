@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 import { VideoPlay } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
@@ -12,7 +12,7 @@ import testHead from '@/assets/headImage.jpg'
 
 const router = useRouter();
 const userStore = useUserStore();
-const {isLogin,headImage,userName} = storeToRefs(userStore);
+const { isLogin, headImage, userName } = storeToRefs(userStore);
 
 //测试数据
 userStore.headImage = testHead;
@@ -22,18 +22,26 @@ userStore.userName = "用户2";
 // const headImg = userStore.headImage;
 // const userName = userStore.userName;
 const video = <Video>{
-    vid:"v2",
+    vid: "v2",
     cover: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
     subTitle: "子标题",
     time: "22:22:22",
     title: "标题",
-    vipOnly: false
+    vipOnly: true
 }
+
+//是否加载中
+const loading = ref<boolean>(false);
 
 //默认激活标签
 const activeIndex = ref<string>();
+
 const topMenuBarClick = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
+    console.log(key, keyPath);
+    if (key=="player") {
+        return;
+    }
+    // router.push("/"+key);
 }
 const loginClick = () => {
     userStore.isLogin = true;
@@ -43,7 +51,7 @@ const logoutClick = () => {
 }
 const videoClickHandler = (video: Video) => {
     console.log(video.title);
-    router.push("/player/"+video.vid);
+    router.push("/player/" + video.vid);
 }
 
 </script>
@@ -53,7 +61,8 @@ const videoClickHandler = (video: Video) => {
         <el-header>
             <!-- 导航栏 -->
             <TopMenuBar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"
-                :user-name="userName" @topMenuBarClick="topMenuBarClick" @login-click="loginClick" @logout-click="logoutClick"></TopMenuBar>
+                :user-name="userName" @topMenuBarClick="topMenuBarClick" @login-click="loginClick"
+                @logout-click="logoutClick"></TopMenuBar>
 
         </el-header>
         <el-main>
@@ -62,29 +71,23 @@ const videoClickHandler = (video: Video) => {
                 <el-divider />
                 <el-row>
                     <el-col v-for="(videoI, index) in 10" :key="index" :span="4" :offset="index % 5 != 0 ? 1 : 0">
-                        <el-skeleton :loading="false" animated>
+                        <el-skeleton :loading="loading" animated>
                             <template #template>
                                 <div class="cover">
+                                    <el-skeleton-item variant="text" class="vipLabel"
+                                        style="width: 30px;"></el-skeleton-item>
                                     <el-skeleton-item variant="image" class="image" />
-                                    <el-skeleton-item variant="text" class="time"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="time" style="width: 80px;"></el-skeleton-item>
                                 </div>
                                 <div class="discibe">
-                                    <el-skeleton-item variant="text" style="width: 50%" />
-                                    <div style="
-                                        display: flex;
-                                        align-items: center;
-                                        justify-items: space-between;
-                                        margin-top: 16px;
-                                        height: 16px;
-                                        ">
-                                        <el-skeleton-item variant="text" style="margin-right: 16px" />
-                                        <el-skeleton-item variant="text" style="width: 30%" />
-                                    </div>
+                                    <el-skeleton-item variant="text" class="title" style="width: 50%;"/><br>
+                                    <el-skeleton-item variant="text" class="subTitle" style="width: 60%;" />
                                 </div>
                             </template>
                             <template #default>
                                 <el-card :body-style="{ padding: '0px' }">
                                     <div class="cover">
+                                        <span v-if="video.vipOnly" class="vipLabel">VIP</span>
                                         <img :src="video.cover" class="image" @click="videoClickHandler(video)" />
                                         <span class="time">{{ video.time }}</span>
                                         <div class="covermask">
@@ -144,6 +147,16 @@ const videoClickHandler = (video: Video) => {
 .videoColumns .cover .image {
     width: 100%;
     height: 150px;
+}
+
+.videoColumns .cover .vipLabel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    font-style: oblique;
+    padding: 2px 5px 2px 2px;
+    background-color: rgba(255, 0, 0, 1)
 }
 
 .videoColumns .cover .time {

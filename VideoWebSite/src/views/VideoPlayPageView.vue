@@ -9,7 +9,7 @@ import type { Video } from '@/config/Video';
 const userStore = useUserStore();
 const { isLogin, headImage, userName } = storeToRefs(userStore);
 const props = defineProps({
-    vid: String
+    vid: String,
 });
 const activeIndex = "player";
 
@@ -136,8 +136,12 @@ const logoutClick = () => {
     padding: 10px;
 }
 
+.el-aside{
+    width: 20%;
+}
+
 .videoSuggestion {
-    width: 300px;
+    width: 100%;
     padding: 10px;
     box-sizing: border-box;
 }
