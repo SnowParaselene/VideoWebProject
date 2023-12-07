@@ -8,7 +8,7 @@ import type { Video } from '@/config/Video';
 import LoginAndRegisterDialog from '@/components/LoginAndRegisterDialog.vue';
 
 const userStore = useUserStore();
-const { isLogin, headImage, userName } = storeToRefs(userStore);
+const { } = storeToRefs(userStore);
 const props = defineProps({
     vid: String,
 });
@@ -28,8 +28,7 @@ const video = <Video>{
 }
 
 const describeTextArea = ref<HTMLTextAreaElement>();
-//对话框是否可见
-const dialogVisible = ref<boolean>(false);
+const loginDialog = ref<InstanceType<typeof LoginAndRegisterDialog>| null>(null);
 
 onMounted(() => {
     //创建大小变化的监视器
@@ -58,37 +57,25 @@ const adjustDescribeAreaHeight = () => {
         describeTextArea.value.style.height = describeTextArea.value.scrollHeight + 'px';
     }
 }
-//顶部菜单栏点击
-const topMenuBarClick = (key: String, keyPath: String[]) => {
-    console.log(key, keyPath);
-}
-//顶部导航栏点击登录按钮
+//点击登录按钮
 const loginClick = () => {
     // userStore.isLogin = true;
     if(!userStore.isLogin){
-        dialogVisible.value=true;
+        // dialogVisible.value=true;
+        if(loginDialog.value){
+            loginDialog.value.visible = true;
+        }
     }
 }
-//顶部导航栏菜单项登出被点击
-const logoutClick = () => {
-    userStore.isLogin = false;
-}
-//登录对话框关闭
-const dialogClose = ()=>{
-    dialogVisible.value=false;
-}
-
 
 </script>
 
 <template>
     <el-container>
-        <login-and-register-dialog v-model:visible="dialogVisible" @dialogClose="dialogClose"></login-and-register-dialog>
+        <login-and-register-dialog ref="loginDialog"></login-and-register-dialog>
         <el-header>
             <!-- 导航栏 -->
-            <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"
-                :user-name="userName" @topMenuBarClick="topMenuBarClick" @login-click="loginClick"
-                @logout-click="logoutClick"></top-menu-bar>
+            <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" @login-click="loginClick"></top-menu-bar>
 
         </el-header>
         <el-container>
@@ -97,14 +84,14 @@ const dialogClose = ()=>{
                     <h3>{{ video.title }}</h3>
                     <p>发布时间：{{ video.updateTime }} &nbsp;&nbsp; 播放量：{{ video.playTimes }}</p>
                 </div>
-                <div class="videoPlayer">
+                <div class="video-player">
                     <video :src="video.video"></video>
                 </div>
-                <textarea class="videoDescribe" readonly wrap="hard" v-model="video.describe"
+                <textarea class="video-describe" readonly wrap="hard" v-model="video.describe"
                     ref="describeTextArea"></textarea>
             </el-main>
             <el-aside>
-                <div class="videoSuggestion">
+                <div class="video-suggestion">
                     视频推荐
                 </div>
             </el-aside>
@@ -118,7 +105,7 @@ const dialogClose = ()=>{
     box-sizing: border-box;
 }
 
-.videoPlayer {
+.video-player {
     width: 100%;
     height: 600px;
     margin-bottom: 40px;
@@ -128,7 +115,7 @@ const dialogClose = ()=>{
     align-items: center;
 }
 
-.videoPlayer video {
+.video-player video {
     height: 100%;
     width: 100%;
     border: 1px black solid;
@@ -137,7 +124,7 @@ const dialogClose = ()=>{
     box-sizing: border-box;
 }
 
-.videoDescribe {
+.video-describe {
     width: 100%;
     height: auto;
     resize: none;
@@ -151,7 +138,7 @@ const dialogClose = ()=>{
     width: 20%;
 }
 
-.videoSuggestion {
+.video-suggestion {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;

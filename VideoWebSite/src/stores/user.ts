@@ -11,5 +11,19 @@ export const useUserStore = defineStore('user', () => {
     let token = ref<string>("");
     let headImage = ref<string>("");
     let vip = ref<boolean>(false);
-    return {isLogin, uid, account, userName, token, headImage, vip }
-})
+    const setUser = (user: User) => {
+        isLogin.value = true;
+        uid.value = user.uid;
+        account.value = user.account;
+        userName.value = user.name;
+        token.value = user.token;
+        headImage.value = user.headImage;
+        vip.value = user.vip;
+    }
+
+    return {isLogin, uid, account, userName, token, headImage, vip,setUser }
+},
+{
+    persist: true,
+}
+)

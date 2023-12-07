@@ -1,14 +1,17 @@
 <script lang="ts" setup>
+import { useUserStore } from '@/stores/user';
 import type { TabsPaneContext } from 'element-plus';
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-const props = defineProps({
-    visible: Boolean,
-})
+import testHead from '@/assets/headImage.jpg'
+
 const emit = defineEmits(['dialogClose', 'dialogLogin', 'dialogRegist'])
+const userStore = useUserStore();
+const {} = storeToRefs(userStore);
 
 //对话框是否可见
-const visibleHandler = props.visible;
+const visible = ref<boolean>(false);
 
 //当前面板
 const activeName = ref<string | number | undefined>("login");
@@ -28,23 +31,27 @@ const handleClick = (pane: TabsPaneContext, ev: Event) => {
     console.log(pane.paneName);
     activeName.value = pane.paneName;
 }
-//窗口关闭
-const handleClose = () => {
-    emit('dialogClose');
-}
 //登录
 const handleLogin = () => {
-    emit('dialogLogin', loginAccount, loginPassword, loginCapture);
+    // emit('dialogLogin', loginAccount, loginPassword, loginCapture);
+    //测试数据
+    userStore.headImage = testHead;
+    userStore.userName = "用户2";
+    userStore.isLogin = true;
+
+    visible.value = false;
 }
 //注册
 const handleRegist = () => {
-    emit('dialogRegist', registerAccount, registerPassword, registerCapture);
+    // emit('dialogRegist', registerAccount, registerPassword, registerCapture);
 }
+
+defineExpose({visible}) ;
 </script>
 
 <template>
     <div>
-        <el-dialog :model-value="visible" @close="handleClose" :show-close="false">
+        <el-dialog v-model="visible"  :show-close="false">
             <el-tabs v-model="activeName" @tab-click="handleClick" type="card" :stretch="true" class="tab">
                 <el-tab-pane label="登录" name="login" class="loginDialog">
                     <h3 style="margin: 20px; font-size:x-large;">欢迎你，游客！ 请先登录</h3>
