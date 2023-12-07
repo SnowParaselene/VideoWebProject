@@ -9,20 +9,10 @@ import LoginAndRegisterDialog from '@/components/LoginAndRegisterDialog.vue'
 import icon from '@/components/icons/icon.png'
 import type { Video } from '@/config/Video'
 
-import testHead from '@/assets/headImage.jpg'
-import { fa } from 'element-plus/lib/locale/index.js'
-
 const router = useRouter();
 const userStore = useUserStore();
-const { isLogin, headImage, userName } = storeToRefs(userStore);
+const {  } = storeToRefs(userStore);
 
-//测试数据
-userStore.headImage = testHead;
-userStore.userName = "用户2";
-
-// const isLogin = userStore.isLogin;
-// const headImg = userStore.headImage;
-// const userName = userStore.userName;
 const video = <Video>{
     vid: "v2",
     cover: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
@@ -35,55 +25,41 @@ const video = <Video>{
 //子组件参数
 //是否加载中
 const loading = ref<boolean>(false);
-//对话框是否可见
-const dialogVisible = ref<boolean>(false);
+//对话框组件
+const loginDialog = ref<InstanceType<typeof LoginAndRegisterDialog> | null>(null);
 //默认激活标签
-const activeIndex = ref<string>();
+const activeIndex = ref<string>("");
 
 //子组件事件回调函数
-//顶部导航栏菜单项被点击
-const topMenuBarClick = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath);
-    if (key=="player") {
-        return;
-    }
-    // router.push("/"+key);
-}
-//顶部导航栏点击登录按钮
+
+//点击登录按钮
 const loginClick = () => {
     // userStore.isLogin = true;
     if(!userStore.isLogin){
-        dialogVisible.value=true;
+        // dialogVisible.value=true;
+        if(loginDialog.value){
+            loginDialog.value.visible = true;
+        }
     }
-}
-//顶部导航栏菜单项登出被点击
-const logoutClick = () => {
-    userStore.isLogin = false;
 }
 //点击进入视频
 const videoClickHandler = (video: Video) => {
     console.log(video.title);
     router.push("/player/" + video.vid);
 }
-//登录对话框关闭
-const dialogClose = ()=>{
-    dialogVisible.value=false;
-}
 
 </script>
 
 <template>
     <el-container>
-        <login-and-register-dialog v-model:visible="dialogVisible" @dialogClose="dialogClose"></login-and-register-dialog>
+        <login-and-register-dialog ref="loginDialog"></login-and-register-dialog>
         <el-header>
             <!-- 导航栏 -->
-            <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" :isLogin="isLogin" :headImg="headImage"
-                :user-name="userName" @topMenuBarClick="topMenuBarClick" @login-click="loginClick"
-                @logout-click="logoutClick"></top-menu-bar>
+            <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" @login-click="loginClick"></top-menu-bar>
 
         </el-header>
         <el-main>
-            <div class="videoColumns">
+            <div class="video-columns">
                 <p>分栏1</p>
                 <el-divider />
                 <el-row>
@@ -98,7 +74,7 @@ const dialogClose = ()=>{
                                 </div>
                                 <div class="discibe">
                                     <el-skeleton-item variant="text" class="title" style="width: 50%;"/><br>
-                                    <el-skeleton-item variant="text" class="subTitle" style="width: 60%;" />
+                                    <el-skeleton-item variant="text" class="sub-title" style="width: 60%;" />
                                 </div>
                             </template>
                             <template #default>
@@ -108,14 +84,14 @@ const dialogClose = ()=>{
                                         <img :src="video.cover" class="image" @click="videoClickHandler(video)" />
                                         <span class="time">{{ video.time }}</span>
                                         <div class="covermask">
-                                            <VideoPlay class="playIcon" />
+                                            <VideoPlay class="play-icon" />
                                         </div>
                                     </div>
 
                                     <div class="discribe">
                                         <span class="title" @click="videoClickHandler(video)">{{ video.title }}</span>
                                         <br>
-                                        <span class="subTitle" @click="videoClickHandler(video)">{{ video.subTitle }}</span>
+                                        <span class="sub-title" @click="videoClickHandler(video)">{{ video.subTitle }}</span>
                                     </div>
                                 </el-card>
                             </template>
@@ -128,20 +104,20 @@ const dialogClose = ()=>{
 </template>
 
 <style scoped>
-.videoColumns {
+.video-columns {
     margin: 0 30px 0 30px;
 }
 
-.videoColumns .el-card {
+.video-columns .el-card {
     margin-bottom: 20px;
 }
 
-.videoColumns .cover {
+.video-columns .cover {
     height: 150px;
     position: relative;
 }
 
-.videoColumns .cover .covermask {
+.video-columns .cover .covermask {
     position: absolute;
     opacity: 0;
     pointer-events: none;
@@ -154,19 +130,19 @@ const dialogClose = ()=>{
     pointer-events: none;
 }
 
-.videoColumns .cover:hover .covermask {
+.video-columns .cover:hover .covermask {
     opacity: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.videoColumns .cover .image {
+.video-columns .cover .image {
     width: 100%;
     height: 150px;
 }
 
-.videoColumns .cover .vipLabel {
+.video-columns .cover .vipLabel {
     position: absolute;
     left: 0;
     top: 0;
@@ -176,7 +152,7 @@ const dialogClose = ()=>{
     background-color: rgba(255, 0, 0, 1)
 }
 
-.videoColumns .cover .time {
+.video-columns .cover .time {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -184,32 +160,32 @@ const dialogClose = ()=>{
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.videoColumns .covermask .playIcon {
+.video-columns .covermask .play-icon {
     width: 50px;
     height: 50px;
 
 }
 
-.videoColumns .discribe {
+.video-columns .discribe {
     padding: 14px 14px 14px 24px
 }
 
-.videoColumns .discribe .title {
+.video-columns .discribe .title {
     font-size: medium;
     font-weight: bold;
 }
 
-.videoColumns .discribe .title:hover {
+.video-columns .discribe .title:hover {
     color: dodgerblue;
 }
 
-.videoColumns .discribe .subTitle {
+.video-columns .discribe .sub-title {
     line-height: 30px;
     padding-left: 20px;
     color: gray;
 }
 
-.videoColumns .discribe .subTitle:hover {
+.video-columns .discribe .sub-title:hover {
     color: dodgerblue;
 }
 </style>
