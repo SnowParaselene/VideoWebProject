@@ -100,8 +100,13 @@ const loginClick = () => {
 </template>
 
 <style lang="scss" scoped>
+.el-container{
+    display: inline-block;
+    height: 100vh;
+}
 .el-main {
     width: 1200px;
+    height: 100%;
     box-sizing: border-box;
 }
 

@@ -7,6 +7,10 @@ export type User = {
      */
     account: string;
     /**
+     * VIP到期时间，用户购买的VIP会员服务过期时间
+     */
+    expirationTime?: string;
+    /**
      * 用户头像，用户头像静态资源路径
      */
     headImage: string;
@@ -14,6 +18,10 @@ export type User = {
      * 用户名，用户昵称
      */
     name: string;
+    /**
+     * 余额，用户账户余额
+     */
+    remainingSum: number;
     /**
      * 登录token，用于校验是否登录以及是否登录过期
      */
