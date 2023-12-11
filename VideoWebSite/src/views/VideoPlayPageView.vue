@@ -24,7 +24,7 @@ const video = <Video>{
     updateTime: "2001-03-21 08:00:00",
     describe: "这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介\n\n\n这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介",
     playTimes: "1万",
-    video: "静态视频资源地址",
+    video: "/刀剑神域BD特典1动漫_手机乐视视频 超清.mp4",
 }
 
 const describeTextArea = ref<HTMLTextAreaElement>();
@@ -71,21 +71,23 @@ const loginClick = () => {
 </script>
 
 <template>
-    <el-container>
+    <el-container class="body">
         <login-and-register-dialog ref="loginDialog"></login-and-register-dialog>
         <el-header>
             <!-- 导航栏 -->
             <top-menu-bar :activeIndex="activeIndex" :webSiteIcon="icon" @login-click="loginClick"></top-menu-bar>
 
         </el-header>
-        <el-container>
+        <el-container class="contant-body">
             <el-main>
-                <div class="videoInfo">
+                <div class="video-info">
                     <h3>{{ video.title }}</h3>
                     <p>发布时间：{{ video.updateTime }} &nbsp;&nbsp; 播放量：{{ video.playTimes }}</p>
                 </div>
                 <div class="video-player">
-                    <video :src="video.video"></video>
+                    <video controls>
+                        <source :src="video.video">
+                    </video>
                 </div>
                 <textarea class="video-describe" readonly wrap="hard" v-model="video.describe"
                     ref="describeTextArea"></textarea>
@@ -100,22 +102,39 @@ const loginClick = () => {
 </template>
 
 <style lang="scss" scoped>
-.el-container{
+.body{
     display: inline-block;
     height: 100vh;
 }
-.el-main {
-    width: 1200px;
-    height: 100%;
+.contant-body{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
     box-sizing: border-box;
+}
+
+.contant-body .el-aside{
+    margin: 0;
+    padding: 0;
+    
+}
+.el-main {
+    // width: 1200px;
+    width: 100%;
+    height: 100%;
+    // box-sizing: border-box;
+    overflow: hidden;
+    
 }
 
 .video-player {
     width: 100%;
-    height: 600px;
+    aspect-ratio: 16/9;
+    // height: 600px;
     margin-bottom: 40px;
     box-sizing: border-box;
-    display: flex;
+    // display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -123,15 +142,15 @@ const loginClick = () => {
 .video-player video {
     height: 100%;
     width: 100%;
-    border: 1px black solid;
+    // border: 1px black solid;
     border-radius: 5px;
-    padding: 10px;
     box-sizing: border-box;
+    background-color: black;
 }
 
 .video-describe {
     width: 100%;
-    height: auto;
+    height: 100%;
     resize: none;
     overflow: hidden;
     border-radius: 5px;
@@ -141,11 +160,14 @@ const loginClick = () => {
 
 .el-aside{
     width: 20%;
+    // box-sizing: border-box;
+    
 }
 
 .video-suggestion {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+    
 }
 </style>
