@@ -26,6 +26,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     return {isLogin, uid, account, userName, token,remainingSum, headImage, vip,expirationTime,setUser }
+
 },
 {
     persist: true,

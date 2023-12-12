@@ -184,7 +184,6 @@ const getBuyRecords = () => {
 
     </el-container>
 </template>
-
 <style lang="scss" scoped>
 .el-container{
     width: 100vw;

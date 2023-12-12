@@ -11,6 +11,7 @@ export type User = {
      */
     expirationTime?: string;
     /**
+
      * 用户头像，用户头像静态资源路径
      */
     headImage: string;
