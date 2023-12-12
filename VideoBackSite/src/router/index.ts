@@ -1,5 +1,7 @@
+import HomePageViewVue from '@/views/HomePageView.vue'
+import LoginPageViewVue from '@/views/LoginPageView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { useAdminStore } from '@/stores/admin'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,17 +9,30 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomePageViewVue
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/login',
+      name: 'login',
+      component: LoginPageViewVue
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const store = useAdminStore();
+  
+  if (to.name === 'login') {
+    if (store.isLogin) {
+      next({ name: 'home' });
+    }
+    next();
+  } else if (!store.isLogin) {
+    next({ name: 'login' });
+  }
+  next();
+
+
 })
 
 export default router
