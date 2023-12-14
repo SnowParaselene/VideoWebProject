@@ -6,5 +6,8 @@ import { RouterView } from 'vue-router'
   <RouterView />
 </template>
 
-<style scoped>
+<style>
+.flex-grow{
+  flex-grow: 1;
+}
 </style>

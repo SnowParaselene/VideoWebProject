@@ -16,7 +16,7 @@ const loginClickHandler = () => {
     console.log("进行输入校验")
     // console.log(account.value);
     if (!account.value) {
-        ElMessage.error('账号不能为空！');
+        ElMessage.error("账号不能为空！");
         return;
     };
     if (!password.value) {

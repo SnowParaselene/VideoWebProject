@@ -2,15 +2,8 @@
 </script>
 
 <template>
-    <div>
-        <el-container>
-            <el-header>Header</el-header>
-            <el-container>
-                <el-aside width="200px">Aside</el-aside>
-                <el-main>Main</el-main>
-            </el-container>
-        </el-container>
-    </div>
+    这是首页，需要做的是一些数据的显示
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
