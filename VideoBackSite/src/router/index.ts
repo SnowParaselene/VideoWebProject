@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAdminStore } from '@/stores/admin'
 import FrameworkVue from '@/components/Framework.vue'
 import ResourceListViewVue from '@/views/ResourceListView.vue'
+import ResourceAddViewVue from '@/views/ResourceAddView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,7 +26,11 @@ const router = createRouter({
         {
           path: '/resource-list',
           component: ResourceListViewVue
-        }
+        },
+        {
+          path: '/resource-add',
+          component: ResourceAddViewVue
+        },
       ]
     },
     {

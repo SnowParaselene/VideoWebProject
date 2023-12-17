@@ -15,6 +15,8 @@ const goBack = ()=>{
     console.log("返回首页");
     router.push('/')
 }
+console.log(router.currentRoute.value.fullPath);
+console.log(router.currentRoute.value.path);
 
 </script>
 
@@ -26,7 +28,7 @@ const goBack = ()=>{
             </el-header>
             <el-container>
                 <el-aside width="200px">
-                    <el-menu :default-active="router.currentRoute.value.path" unique-opened router>
+                    <el-menu :default-active="router.currentRoute.value.fullPath" unique-opened router>
                         <template v-for="menuItem in menuMap">
                             <el-sub-menu v-if="menuItem.options && menuItem.options.length > 0" :index="menuItem.value">
                                 <template #title>

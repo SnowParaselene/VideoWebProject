@@ -25,7 +25,7 @@ export interface Video {
     /**
      * 稿件状态，稿件当前状态，属于上线还是下线
      */
-    status?: string;
+    status?: boolean;
     /**
      * 子标题，稿件副标题
      */

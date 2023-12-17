@@ -12,39 +12,39 @@ export const useMenuMapStore = defineStore('menuMap', () => {
         {
             label: '资源管理',
             icon: 'Files',
-            value: 'resource',
+            value: '/resource',
             options: [
                 {
                     label: '资源列表',
                     icon: '',
-                    value: 'resource-list',
+                    value: '/resource-list',
                 },
                 {
                     label: '资源添加',
                     icon: '',
-                    value: 'resource-add',
+                    value: '/resource-add',
                 },
             ]
         },
         {
             label: '分类管理',
             icon: 'Folder',
-            value: 'sort',
+            value: '/sort',
         },
         {
             label: '用户管理',
             icon: 'User',
-            value: 'user'
+            value: '/user'
         },
         {
             label: '评论管理',
             icon: 'Comment',
-            value: 'comment',
+            value: '/comment',
         },
         {
             label: '权限管理',
             icon: 'Setting',
-            value: 'authority',
+            value: '/authority',
         },
 
 
