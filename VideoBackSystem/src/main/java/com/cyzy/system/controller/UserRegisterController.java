@@ -1,4 +1,4 @@
 package com.cyzy.system.controller;
 
-public class RegisterController {
+public class UserRegisterController {
 }

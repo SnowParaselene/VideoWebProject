@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyzy.system.mapper.AdminMapper">
+    <resultMap id="adminFull" type="com.cyzy.system.entity.po.AdminPo" extends="mybatis-plus_AdminPo">
+        <association property="adminStatus"
+                     resultMap="com.cyzy.system.mapper.StatusMapper.mybatis-plus_StatusPo"></association>
+        <association property="adminCharacter"
+                     resultMap="com.cyzy.system.mapper.CharacterMapper.mybatis-plus_CharacterPo"></association>
+    </resultMap>
+</mapper>

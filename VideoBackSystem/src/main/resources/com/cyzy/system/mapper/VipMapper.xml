@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyzy.system.mapper.VipMapper">
+    <resultMap id="userVip" type="com.cyzy.system.entity.po.VipPo" extends="com.cyzy.system.mapper.VipMapper.mybatis-plus_VipPo">
+        <result property="expirationTime" column="expiration_time" javaType="Date"></result>
+    </resultMap>
+</mapper>
