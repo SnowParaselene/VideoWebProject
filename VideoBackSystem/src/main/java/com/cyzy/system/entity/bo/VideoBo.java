@@ -18,14 +18,30 @@ public class VideoBo {
         //    videoTypeLabel = videoPo.getVideoType().getParentType().getVideoTypeLabel() + "/" + videoTypeLabel;
         //}
 
+        String playTimes;
+        Integer videoPlayCount = videoPo.getVideoPlayCount();
+        if (videoPlayCount >= 10000) {
+            playTimes = videoPlayCount / 10000 + "万";
+        } else {
+            playTimes = String.valueOf(videoPlayCount);
+        }
+
+        String duration = null;
+        Long videoDuration = videoPo.getVideoDuration();
+        if (videoDuration > 60) {
+            String min = videoDuration / 60 > 9 ? String.valueOf(videoDuration / 60) : "0" + (videoDuration / 60);
+            String seconds = String.valueOf(videoDuration % 60);
+            duration = min + ":" + seconds;
+        }
+
         return new VideoVo(videoPo.getVideoCover(),
                 videoPo.getCreateTime(),
                 videoPo.getVideoIntroduction(),
-                videoPo.getVideoPlayCount(),
+                playTimes,
                 videoTypeLabel,
                 videoPo.getVideoStatus(),
                 videoPo.getVideoSubtitle(),
-                videoPo.getVideoDuration(),
+                duration,
                 videoPo.getVideoTitle(),
                 videoPo.getUpdateTime(),
                 videoPo.getVideoId(),

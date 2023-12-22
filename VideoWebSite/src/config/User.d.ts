@@ -1,7 +1,7 @@
 /**
- * 用户
+ * User
  */
-export type User = {
+export interface User {
     /**
      * 登录账号，用于用户登录的账号名
      */
@@ -22,10 +22,6 @@ export type User = {
      * 余额，用户账户余额
      */
     remainingSum: number;
-    /**
-     * 登录token，用于校验是否登录以及是否登录过期
-     */
-    token: string;
     /**
      * 用户uid，用户账号唯一标识
      */

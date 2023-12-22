@@ -30,7 +30,7 @@ public class VideoVo {
     /**
      * 播放量，稿件的播放次数
      */
-    private Integer playTimes;
+    private String playTimes;
 
     /**
      * 稿件类型，分类
@@ -50,7 +50,7 @@ public class VideoVo {
     /**
      * 时长，视频时长
      */
-    private Long time;
+    private String time;
 
     /**
      * 标题，稿件主标题

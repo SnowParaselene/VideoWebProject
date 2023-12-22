@@ -24,11 +24,11 @@ public class ToolController {
     @GetMapping("/captcha")
     public void getCaptchaImage(@RequestParam(name = "width") int width,
                                 @RequestParam(name = "height") int height,
-                                HttpServletResponse response){
-        Object[] objects = toolService.generateCaptchaImage(width,height);
+                                HttpServletResponse response) {
+        Object[] objects = toolService.generateCaptchaImage(width, height);
         response.addCookie(new Cookie("token", (String) objects[0]));
         try {
-            ImageIO.write((BufferedImage)objects[1],"png",response.getOutputStream());
+            ImageIO.write((BufferedImage) objects[1], "png", response.getOutputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,21 +36,15 @@ public class ToolController {
     }
 
     @GetMapping("/video")
-    public void getVideoFile(HttpServletRequest request, HttpServletResponse response, String videoPath){
+    public void getVideoFile(HttpServletRequest request, HttpServletResponse response,@RequestParam(name = "videoId") String vid) {
         boolean authToken = myTools.authToken(request);
         if (!authToken) {
             response.setStatus(400);
             return;
         }
 
-        //视频资源存储信息
-        response.reset();
-
-        try {
-            toolService.getVideoFile(videoPath,response.getOutputStream());
-        } catch (IOException e) {
-            response.setStatus(400);
-        }
+        //发送视频资源
+        toolService.sentVideoFile(request, response, vid);
     }
 
 

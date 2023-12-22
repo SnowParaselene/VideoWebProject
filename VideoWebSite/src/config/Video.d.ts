@@ -1,7 +1,7 @@
 /**
- * 视频
+ * Video
  */
-export type Video = {
+export interface Video {
     /**
      * 封面，视频封面静态资源路径
      */
@@ -19,9 +19,17 @@ export type Video = {
      */
     playTimes: string;
     /**
+     * 稿件类型，分类
+     */
+    sort?: string;
+    /**
+     * 稿件状态，稿件当前状态，属于上线还是下线
+     */
+    status?: boolean;
+    /**
      * 子标题，稿件副标题
      */
-    subTitle: string;
+    subTitle?: string;
     /**
      * 时长，视频时长
      */
@@ -47,4 +55,3 @@ export type Video = {
      */
     vipOnly: boolean;
 }
-
