@@ -1,14 +1,13 @@
 package com.cyzy.system.controller;
 
 import com.cyzy.system.service.IToolService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.cyzy.system.utils.MyTools;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,8 +15,8 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/tool")
 public class ToolController {
-    //@Resource
-    //MyTools myTools;
+    @Resource
+    MyTools myTools;
 
     @Resource
     IToolService toolService;
@@ -34,6 +33,24 @@ public class ToolController {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @GetMapping("/video")
+    public void getVideoFile(HttpServletRequest request, HttpServletResponse response, String videoPath){
+        boolean authToken = myTools.authToken(request);
+        if (!authToken) {
+            response.setStatus(400);
+            return;
+        }
+
+        //视频资源存储信息
+        response.reset();
+
+        try {
+            toolService.getVideoFile(videoPath,response.getOutputStream());
+        } catch (IOException e) {
+            response.setStatus(400);
+        }
     }
 
 

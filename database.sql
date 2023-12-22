@@ -156,3 +156,66 @@ CREATE TABLE t_user_vip(
     -- 会员到期时间
     expiration_time TIMESTAMP
 );
+
+-- 视频表
+DROP TABLE IF EXISTS t_video;
+CREATE TABLE t_video(
+    -- 表id
+	t_video_id INT PRIMARY KEY AUTO_INCREMENT,
+    -- 视频id
+	video_id VARCHAR(20),
+    -- 创建时间
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- 最后更新时间
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    -- 视频标题
+    video_title VARCHAR(20),
+    -- 视频子标题
+    video_subtitle VARCHAR(20),
+    -- 视频状态
+    video_status INT,
+    -- 视频路径
+    video_path VARCHAR(100),
+    -- 视频时长
+    video_duration BIGINT,
+    -- 视频封面
+    video_cover VARCHAR(100),
+    -- 视频播放量
+    video_play_count INT,
+    -- 会员专享
+    video_vip_only INT,
+    -- 视频简介
+    video_introduction VARCHAR(100)
+);
+
+-- 视频类型表
+DROP TABLE IF EXISTS t_video_type;
+CREATE TABLE t_video_type(
+    -- 视频类型id
+	t_video_type_id INT PRIMARY KEY AUTO_INCREMENT,
+    -- 创建时间
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- 最后更新时间
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    -- 视频类型名
+    video_type_label VARCHAR(20),
+    -- 视频类型值
+    video_type_value VARCHAR(20),
+    -- 父类型id
+    parent_type_id INT
+);
+
+-- 视频分类关系表
+DROP TABLE IF EXISTS t_video_type_relation;
+CREATE TABLE t_video_type_relation(
+    -- 视频分类关系id
+	t_video_type_relation_id INT PRIMARY KEY AUTO_INCREMENT,
+    -- 创建时间
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- 最后更新时间
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    -- 视频id
+    video_id VARCHAR(20),
+    -- 视频类型id
+    video_type_id INT
+);

@@ -2,24 +2,18 @@ package com.cyzy.system.entity.bo;
 
 import com.cyzy.system.entity.po.AdminPo;
 import com.cyzy.system.entity.vo.AdminVo;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Data
 public class AdminBo{
     private AdminPo admin;
-    private Map menuMap;
+    private Map<String,Object> menuMap;
 
     public AdminBo(AdminPo admin) {
         this.admin = admin;
 
-    }
-
-    public AdminBo(Map menuMap) {
-        this.menuMap = menuMap;
     }
 
     //转换为vo对象
